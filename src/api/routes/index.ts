@@ -1,7 +1,10 @@
 import {Router} from "express";
 
-import {ListUserGroups} from '../controllers/UserGroup.Controller'
+import {ListUserGroups, CreateUserGroup} from '../controllers/UserGroup.Controller'
 
 export const routes =async (router: Router)=>{
-    router.get('/api/user-group/list', ListUserGroups)
+
+    // Router User Group
+    router.get('/api/user-group/list', ListUserGroups),
+    router.post('/api/user-group/create', CreateUserGroup)
 }
