@@ -1,13 +1,6 @@
-import {Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany} from "typeorm";
+import {Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn,OneToMany} from "typeorm";
 import { User } from "./userModal";
 
-interface PermissionData {
-    id: number;
-    name: string;
-    description: string;
-    group: string;
-    action: string
-  }
 
 @Entity()
 export class UserGroup {
@@ -20,8 +13,10 @@ export class UserGroup {
     @Column()
     description: string ;
 
-    @Column({ type: 'json' })
-    permission: PermissionData;
+    @Column({
+      type: 'simple-array',
+    })
+    permission: number[]
 
     @OneToMany(()=> User, user => user.user_group)
     user: User
@@ -31,5 +26,4 @@ export class UserGroup {
 
     @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
     update_at: Date;
-
 }

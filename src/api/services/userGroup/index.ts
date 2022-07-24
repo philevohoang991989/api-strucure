@@ -1,4 +1,5 @@
 import {Request, Response} from 'express'
+import _ from 'lodash'
 import {getManager} from 'typeorm'
 import {httpStatusCodes} from  "../../helpers"
 import {UserGroup} from '../../models/userGroupModal'
@@ -7,16 +8,18 @@ import {CreateValidation} from '../../validations/UserGroup/create.validation'
 export const listUserGroup = async (req: Request, res: Response)=>{
     const repository = getManager().getRepository(UserGroup);
 
-    const list = await repository.find()
+    const list = await repository.find() 
 
     return res.send({
         message: 'success',
         status: 200,
-        data: [] || list 
+        data: list
     });
 }
 
 export const createUserGroup = async (req: Request, res: Response)=>{
+    console.log(req.body);
+    
 
     const body = req.body
     const repository = getManager().getRepository(UserGroup);
@@ -26,14 +29,13 @@ export const createUserGroup = async (req: Request, res: Response)=>{
         return res.status(httpStatusCodes.BAD_REQUEST).send(error.details)
     }
     const name = await repository.findOneBy({name: req.body.name});
-    const permission = await repository.findOneBy({permission: req.body.permission});
 
-    const type_error = name ? "Name" : permission ? "Permission" : ""
+    const type_error = name ? "Name" : ""
 
     if(type_error){
         return res.send({
             status: httpStatusCodes.NOT_FOUND,
-            message: `${type_error} already exists`
+            message: `Name already exists`
         });
     }
 
@@ -44,4 +46,44 @@ export const createUserGroup = async (req: Request, res: Response)=>{
         status: 200,
         data: data
     });
+}
+
+export const updateUserGroup = async (req: Request, res: Response)=>{
+
+    const repository = getManager().getRepository(UserGroup);
+
+    delete req.body['id'];
+    
+    await repository.update(req.params.id, req.body);
+
+    const data = await repository.findOneBy({id: Number(req.params.id)})
+
+
+    res.send({
+        message: 'success',
+        status: httpStatusCodes.OK,
+        data
+    })
+}
+export const deleteUserGroup =async (req: Request, res: Response) => {
+
+    const repository = getManager().getRepository(UserGroup)
+    
+    const data = await repository.findOneBy({id: Number(req.params.id)})
+    console.log({repository1: getManager().getRepository(UserGroup)});
+    
+    await repository.createQueryBuilder()
+    .delete()
+    .from(UserGroup)
+    .where("id = :id", { id: Number(req.params.id) })
+    .execute()
+    
+    // delete({id: Number(req.params.id)})
+
+    res.send({
+        message: 'success',
+        status: httpStatusCodes.OK,
+        data: {}
+    });
+    
 }
