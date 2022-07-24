@@ -1,4 +1,4 @@
-import {Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn,OneToMany} from "typeorm";
+import {Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn,OneToMany, DeleteDateColumn} from "typeorm";
 import { User } from "./userModal";
 
 
@@ -26,4 +26,7 @@ export class UserGroup {
 
     @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
     update_at: Date;
+    @DeleteDateColumn()
+    deletedAt: Date;
+  
 }

@@ -73,12 +73,10 @@ export const deleteUserGroup =async (req: Request, res: Response) => {
     console.log({repository1: getManager().getRepository(UserGroup)});
     
     await repository.createQueryBuilder()
-    .delete()
+    .softDelete()
     .from(UserGroup)
     .where("id = :id", { id: Number(req.params.id) })
     .execute()
-    
-    // delete({id: Number(req.params.id)})
 
     res.send({
         message: 'success',
