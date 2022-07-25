@@ -1,32 +1,46 @@
-import {Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn,OneToMany, DeleteDateColumn} from "typeorm";
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToMany,
+  DeleteDateColumn,
+} from "typeorm";
 import { User } from "./userModal";
-
 
 @Entity()
 export class UserGroup {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    name: string ;
+  @Column()
+  name: string;
 
-    @Column()
-    description: string ;
+  @Column()
+  description: string;
 
-    @Column({
-      type: 'simple-array',
-    })
-    permission: number[]
+  @Column({
+    type: "simple-array",
+  })
+  permission: number[];
 
-    @OneToMany(()=> User, user => user.user_group)
-    user: User
+  @OneToMany(() => User, (user) => user.group_id)
+  user: User;
 
-    @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
-    created_at: Date;
+  @CreateDateColumn({
+    type: "timestamp",
+    default: () => "CURRENT_TIMESTAMP(6)",
+  })
+  created_at: Date;
 
-    @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
-    update_at: Date;
-    @DeleteDateColumn()
-    deletedAt: Date;
-  
+  @UpdateDateColumn({
+    type: "timestamp",
+    default: () => "CURRENT_TIMESTAMP(6)",
+    onUpdate: "CURRENT_TIMESTAMP(6)",
+  })
+  update_at: Date;
+
+  @DeleteDateColumn()
+  deleted_at: Date;
 }

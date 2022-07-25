@@ -1,43 +1,66 @@
-import {Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany,JoinColumn, ManyToOne} from "typeorm";
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToMany,
+  JoinColumn,
+  ManyToOne,
+  DeleteDateColumn,
+} from "typeorm";
 import { UserGroup } from "./userGroupModal";
 import { UserPermission } from "./userPermission.Modal";
 
 @Entity()
 export class User {
-    @PrimaryGeneratedColumn()
-    id: number;
-     
-    @ManyToOne(()=> UserGroup, user_group => user_group.user)
-    @JoinColumn({name: "group_id"})
-    user_group: UserGroup
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    username: string ;
+  @ManyToOne(() => UserGroup, (user_group) => user_group.user)
+  @JoinColumn({ name: "group_id" })
+  group_id: UserGroup;
 
-    @Column()
-    password: string ;
+  @Column()
+  username: string;
 
-    @Column()
-    avatar: string
+  @Column()
+  phone: string;
 
-    @Column()
-    fullname: string
+  @Column()
+  password: string;
 
-    
-    @Column()
-    email: string
+  @Column()
+  avatar: string;
 
-    @Column()
-    status: string
-   
+  @Column()
+  fullname: string;
 
-    @OneToMany(()=> UserPermission, userPermission => userPermission.permission)
-    userpermission: UserPermission
+  @Column()
+  email: string;
 
-    @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
-    created_at: Date;
+  @Column()
+  status: string;
 
-    @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
-    update_at: Date;
+  @OneToMany(
+    () => UserPermission,
+    (userPermission) => userPermission.permission_id
+  )
+  userpermission: UserPermission;
 
+  @CreateDateColumn({
+    type: "timestamp",
+    default: () => "CURRENT_TIMESTAMP(6)",
+  })
+  created_at: Date;
+
+  @UpdateDateColumn({
+    type: "timestamp",
+    default: () => "CURRENT_TIMESTAMP(6)",
+    onUpdate: "CURRENT_TIMESTAMP(6)",
+  })
+  update_at: Date;
+
+  @DeleteDateColumn()
+  deleted_at: Date;
 }
