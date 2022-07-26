@@ -5,6 +5,8 @@ export const CreateValidation = Joi.object({
   password: Joi.string().required(),
   password_confirm: Joi.string().required(),
   avatar: Joi.string().empty(""),
+  role: Joi.string().empty(),
+  groupID: Joi.number().empty(),
   fullname: Joi.string().required(),
   group_id: Joi.number().required(),
   email: Joi.string().required(),

@@ -17,6 +17,7 @@ import { CreateValidation } from "../../validations/user/create.validation";
 
 export const listUser = async (req: Request, res: Response) => {
   const repository = getManager().getRepository(User);
+  const repository_group = getManager().getRepository(UserGroup);
 
   const list = await repository.find({
     relations: ["group_id"],
@@ -25,7 +26,10 @@ export const listUser = async (req: Request, res: Response) => {
   return res.status(httpStatusCodes.OK).send({
     message: "success",
     status: httpStatusCodes.OK,
-    data: list,
+    data: list.map((user) => {
+      const { password, ...data } = user;
+      return data;
+    }),
   });
 };
 
@@ -67,6 +71,7 @@ export const createUser = async (req: Request, res: Response) => {
     email: body.email,
     status: body.status,
     role: item.name,
+    groupID: body.group_id,
     phone: body.phone,
     group_id: {
       id: body.group_id,
@@ -91,22 +96,46 @@ export const createUser = async (req: Request, res: Response) => {
     data: user,
   });
 };
+
+export const getUser = async (_id: number, res: Response) => {
+  const repository = getManager().getRepository(User);
+
+  const { password, ...user } = await repository.findOneBy({ id: _id });
+
+  res.status(httpStatusCodes.OK).send({
+    message: "success",
+    status: httpStatusCodes.OK,
+    data: user,
+  });
+};
 export const updateUser = async (req: Request, res: Response) => {
   const repository = getManager().getRepository(User);
   const repository_group = getManager().getRepository(UserGroup);
   const table_user_permis = getManager().getRepository(UserPermission);
 
-  const username = await repository.findOneBy({ username: req.body.username });
-  const email = await repository.findOneBy({ email: req.body.email });
-  const fullname = await repository.findOneBy({ fullname: req.body.fullname });
-
-  const type_error = username
-    ? "Username"
-    : email
-    ? "Email"
-    : fullname
-    ? "Fullname"
-    : "";
+  const username = await repository.find({
+    where: {
+      username: req.body.username,
+    },
+  });
+  const email = await repository.find({
+    where: {
+      email: req.body.email,
+    },
+  });
+  const fullname = await repository.find({
+    where: {
+      fullname: req.body.fullname,
+    },
+  });
+  const type_error =
+    username.length == 0
+      ? "Username"
+      : email.length == 0
+      ? "Email"
+      : fullname.length == 0
+      ? "Fullname"
+      : "";
 
   if (type_error) {
     return res.status(httpStatusCodes.UNAUTHORIZED_ERROR).send({
@@ -138,7 +167,7 @@ export const updateUser = async (req: Request, res: Response) => {
 
   // If group_id update !== group_id of user edit
 
-  if (req.body.group_id !== user.group_id.id) {
+  if (req.body.group_id !== user.groupID) {
     item.map((itemFind) => {
       deleteUserPermission(itemFind.id, res);
     });
@@ -157,12 +186,19 @@ export const updateUser = async (req: Request, res: Response) => {
 
   await repository.update(req.params.id, req.body);
 
+  const itemGroup = await repository_group.findOneBy({ id: req.body.group_id });
+
   const data = await repository.findOneBy({ id: Number(req.params.id) });
+  const { password, ...dataPost } = {
+    ...data,
+    groupID: req.body.group_id,
+    role: itemGroup.name,
+  };
 
   res.status(httpStatusCodes.OK).send({
     message: "success",
     status: httpStatusCodes.OK,
-    data,
+    data: dataPost,
   });
 };
 export const deleteUser = async (req: Request, res: Response) => {

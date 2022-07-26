@@ -24,6 +24,7 @@ import {
   CreateUser,
   UpdateUser,
   DeleteUser,
+  GetUser,
 } from "../controllers/User.Controller";
 
 export const routes = async (router: Router) => {
@@ -42,6 +43,7 @@ export const routes = async (router: Router) => {
   // Router User
   router.get("/api/users/list", ListUser);
   router.post("/api/users/create", CreateUser);
+  router.get("/api/users/:id", GetUser);
   router.put("/api/users/:id", UpdateUser);
   router.delete("/api/users/:id", DeleteUser);
 

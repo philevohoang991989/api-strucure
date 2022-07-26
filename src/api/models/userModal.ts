@@ -40,6 +40,12 @@ export class User {
   email: string;
 
   @Column()
+  role: string;
+
+  @Column()
+  groupID: number;
+
+  @Column()
   status: string;
 
   @OneToMany(

@@ -1,6 +1,12 @@
 import { Request, Response } from "express";
 
-import { listUser, createUser, updateUser, deleteUser } from "../services/user";
+import {
+  listUser,
+  createUser,
+  getUser,
+  updateUser,
+  deleteUser,
+} from "../services/user";
 
 export const ListUser = async (req: Request, res: Response, next: Function) => {
   try {
@@ -17,6 +23,14 @@ export const CreateUser = async (
 ) => {
   try {
     await createUser(req, res);
+  } catch (e) {
+    return next(e);
+  }
+};
+
+export const GetUser = async (req: Request, res: Response, next: Function) => {
+  try {
+    await getUser(Number(req.params.id), res);
   } catch (e) {
     return next(e);
   }
