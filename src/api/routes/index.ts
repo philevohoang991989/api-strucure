@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { Login } from "../controllers/auth.Controller";
+import { Login, Logout } from "../controllers/auth.Controller";
 import {AuthMiddleware} from "../middlewares/auth.middleware";
 
 import {
@@ -33,6 +33,7 @@ import {
 export const routes = async (router: Router) => {
   // Router auth
   router.post("/api/login", Login);
+  router.post("/api/logout", AuthMiddleware, Logout);
 
   // Router User Group
   router.get("/api/user-group/list", AuthMiddleware, ListUserGroups);
