@@ -22,3 +22,8 @@ export const mapPermission = (
     actionFun(bodyPost, resPermission);
   });
 };
+
+export const Role = {
+  Admin: "Admin",
+  SuperAdmin: "Super Admin",
+};
