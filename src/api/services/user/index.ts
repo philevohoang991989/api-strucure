@@ -30,6 +30,8 @@ export const listUser = async (req: Request, res: Response) => {
   return res.status(httpStatusCodes.OK).send({
     message: "success",
     status: httpStatusCodes.OK,
+    page,
+    page_size,
     data: list.map((user) => {
       const { password, ...data } = user;
       return data;
