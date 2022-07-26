@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import { listUser, createUser, updateUser } from "../services/user";
+import { listUser, createUser, updateUser, deleteUser } from "../services/user";
 
 export const ListUser = async (req: Request, res: Response, next: Function) => {
   try {
@@ -29,6 +29,18 @@ export const UpdateUser = async (
 ) => {
   try {
     await updateUser(req, res);
+  } catch (e) {
+    return next(e);
+  }
+};
+
+export const DeleteUser = async (
+  req: Request,
+  res: Response,
+  next: Function
+) => {
+  try {
+    deleteUser(req, res);
   } catch (e) {
     return next(e);
   }

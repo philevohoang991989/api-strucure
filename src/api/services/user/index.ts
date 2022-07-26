@@ -1,15 +1,19 @@
+// import from lib
 import { Request, Response } from "express";
 import _ from "lodash";
 import bcyptjs from "bcryptjs";
-import { getManager, In } from "typeorm";
-import { httpStatusCodes } from "../../helpers";
+import { getManager } from "typeorm";
+
+// import from file in project
+import { httpStatusCodes, mapPermission } from "../../helpers";
 import { User } from "../../models/userModal";
 import { UserGroup } from "../../models/userGroupModal";
 import { UserPermission } from "../../models/userPermission.Modal";
-import { createUserPermission } from "../../services/userPermission";
-import { deleteUserPermission } from "../../services/userPermission";
+import {
+  createUserPermission,
+  deleteUserPermission,
+} from "../../services/userPermission";
 import { CreateValidation } from "../../validations/user/create.validation";
-import { createUserPermmiss } from "../../@types/global.type";
 
 export const listUser = async (req: Request, res: Response) => {
   const repository = getManager().getRepository(User);
@@ -18,9 +22,9 @@ export const listUser = async (req: Request, res: Response) => {
     relations: ["group_id"],
   });
 
-  return res.send({
+  return res.status(httpStatusCodes.OK).send({
     message: "success",
-    status: 200,
+    status: httpStatusCodes.OK,
     data: list,
   });
 };
@@ -47,7 +51,7 @@ export const createUser = async (req: Request, res: Response) => {
   const type_error = username ? "Username" : email ? "Email" : "";
 
   if (type_error) {
-    return res.send({
+    return res.status(httpStatusCodes.NOT_FOUND).send({
       status: httpStatusCodes.NOT_FOUND,
       message: `${type_error} already exists`,
     });
@@ -73,15 +77,15 @@ export const createUser = async (req: Request, res: Response) => {
     await repository.findOneBy({ username: req.body.username })
   ).id;
 
-  item.permission.map((item) => {
-    const bodyPost: createUserPermmiss = {
-      permission_id: Number(item),
-      user_id: userId,
-    };
-    createUserPermission(bodyPost, res);
-  });
+  /*   
+    Create User Permission with array permission find from table user_permission
+    item.permission:  Array map
+    userId : id user edit
+    createUserPermission: Function create user permission 
+  */
+  mapPermission(item.permission, userId, createUserPermission, res);
 
-  res.send({
+  res.status(httpStatusCodes.OK).send({
     message: "success",
     status: 200,
     data: user,
@@ -92,28 +96,112 @@ export const updateUser = async (req: Request, res: Response) => {
   const repository_group = getManager().getRepository(UserGroup);
   const table_user_permis = getManager().getRepository(UserPermission);
 
-  const itemGroupUser = await repository_group.findOneBy({
+  const username = await repository.findOneBy({ username: req.body.username });
+  const email = await repository.findOneBy({ email: req.body.email });
+  const fullname = await repository.findOneBy({ fullname: req.body.fullname });
+
+  const type_error = username
+    ? "Username"
+    : email
+    ? "Email"
+    : fullname
+    ? "Fullname"
+    : "";
+
+  if (type_error) {
+    return res.status(httpStatusCodes.UNAUTHORIZED_ERROR).send({
+      status: httpStatusCodes.UNAUTHORIZED_ERROR,
+      message: `Are you sure you want to change ${type_error}?`,
+    });
+  }
+
+  const user = await repository.findOneBy({ id: Number(req.params.id) });
+
+  // Map all item in table user_permission with user_id = _id edit
+  // Will execute following query:
+  // DELETE FROM `user_permission` WHERE user_id = _id
+
+  const item = await table_user_permis.find({
+    relations: {
+      user_id: true,
+    },
+    where: {
+      user_id: {
+        id: user.id,
+      },
+    },
+  });
+
+  const itemUserGroup = await repository_group.findOneBy({
     id: req.body.group_id,
   });
 
-  const _id = (await repository.findOneBy({ id: Number(req.params.id) })).id;
+  // If group_id update !== group_id of user edit
 
-  const item = await table_user_permis.find({
-    select: ["user_id"],
-    where: { id: _id },
+  if (req.body.group_id !== user.group_id.id) {
+    item.map((itemFind) => {
+      deleteUserPermission(itemFind.id, res);
+    });
+
+    // Create User Permissions with Array itemUserGroup edit new
+
+    mapPermission(
+      itemUserGroup.permission,
+      req.params.id,
+      createUserPermission,
+      res
+    );
+  }
+
+  delete req.body["id"];
+
+  await repository.update(req.params.id, req.body);
+
+  const data = await repository.findOneBy({ id: Number(req.params.id) });
+
+  res.status(httpStatusCodes.OK).send({
+    message: "success",
+    status: httpStatusCodes.OK,
+    data,
   });
-  // // DELETE FROM `user_permission` WHERE user_id = 15
-  console.log({ item });
+};
+export const deleteUser = async (req: Request, res: Response) => {
+  const repository = getManager().getRepository(User);
+  const table_user_permis = getManager().getRepository(UserPermission);
 
-  // delete req.body["id"];
+  const user = await repository.findOneBy({ id: Number(req.params.id) });
+  if (user) {
+    const item = await table_user_permis.find({
+      relations: {
+        user_id: true,
+      },
+      where: {
+        user_id: {
+          id: user.id,
+        },
+      },
+    });
+    item.map((itemFind) => {
+      deleteUserPermission(itemFind.id, res);
+    });
 
-  // await repository.update(req.params.id, req.body);
+    await repository
+      .createQueryBuilder()
+      .softDelete()
+      .from(User)
+      .where("id = :id", { id: Number(req.params.id) })
+      .execute();
 
-  // const data = await repository.findOneBy({ id: Number(req.params.id) });
-
-  // res.send({
-  //   message: "success",
-  //   status: httpStatusCodes.OK,
-  //   data,
-  // });
+    res.status(httpStatusCodes.OK).send({
+      message: "success",
+      status: httpStatusCodes.OK,
+      data: {},
+    });
+  } else {
+    res.status(httpStatusCodes.UNAUTHORIZED_ERROR).send({
+      message: "User does not exist",
+      status: httpStatusCodes.UNAUTHORIZED_ERROR,
+      data: null,
+    });
+  }
 };

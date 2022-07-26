@@ -10,9 +10,9 @@ export const listPermission = async (req: Request, res: Response) => {
 
   const list = await repository.find();
 
-  return res.send({
+  return res.status(httpStatusCodes.OK).send({
     message: "success",
-    status: 200,
+    status: httpStatusCodes.OK,
     data: list,
   });
 };
@@ -29,7 +29,7 @@ export const createPermission = async (req: Request, res: Response) => {
   const type_error = name ? "Name" : "";
 
   if (type_error) {
-    return res.send({
+    return res.status(httpStatusCodes.NOT_FOUND).send({
       status: httpStatusCodes.NOT_FOUND,
       message: `Name already exists`,
     });
@@ -37,9 +37,9 @@ export const createPermission = async (req: Request, res: Response) => {
 
   const data = await repository.save(body);
 
-  res.send({
+  res.status(httpStatusCodes.OK).send({
     message: "success",
-    status: 200,
+    status: httpStatusCodes.OK,
     data: data,
   });
 };
@@ -52,7 +52,7 @@ export const updatePermission = async (req: Request, res: Response) => {
 
   const data = await repository.findOneBy({ id: Number(req.params.id) });
 
-  res.send({
+  res.status(httpStatusCodes.OK).send({
     message: "success",
     status: httpStatusCodes.OK,
     data,
@@ -71,7 +71,7 @@ export const deletePermission = async (req: Request, res: Response) => {
     .where("id = :id", { id: Number(req.params.id) })
     .execute();
 
-  res.send({
+  res.status(httpStatusCodes.OK).send({
     message: "success",
     status: httpStatusCodes.OK,
     data: {},

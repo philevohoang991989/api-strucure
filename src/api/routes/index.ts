@@ -19,7 +19,12 @@ import {
   DeleteUserPermission,
 } from "../controllers/UserPermission.Controller";
 
-import { ListUser, CreateUser, UpdateUser } from "../controllers/User.Controller";
+import {
+  ListUser,
+  CreateUser,
+  UpdateUser,
+  DeleteUser,
+} from "../controllers/User.Controller";
 
 export const routes = async (router: Router) => {
   // Router User Group
@@ -37,7 +42,8 @@ export const routes = async (router: Router) => {
   // Router User
   router.get("/api/users/list", ListUser);
   router.post("/api/users/create", CreateUser);
-  router.put("/api/users/:id", UpdateUser)
+  router.put("/api/users/:id", UpdateUser);
+  router.delete("/api/users/:id", DeleteUser);
 
   // Router User Permission
 

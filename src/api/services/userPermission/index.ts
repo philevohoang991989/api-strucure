@@ -12,22 +12,19 @@ export const listUserPermission = async (req: Request, res: Response) => {
     relations: ["permission_id", "user_id"],
   });
 
-  return res.send({
+  return res.status(httpStatusCodes.OK).send({
     message: "success",
-    status: 200,
+    status: httpStatusCodes.OK,
     data: list,
   });
 };
 
 export const createUserPermission = async (
   body: createUserPermmiss,
-  res: Response
+  res?: Response
 ) => {
   const repository = getManager().getRepository(UserPermission);
 
-  const itemFind = await repository.findOneBy({
-    id: body.user_id,
-  });
   const { error } = CreateValidation.validate(body);
 
   if (error) {
@@ -42,11 +39,11 @@ export const createUserPermission = async (
     },
   });
 
-  res.send({
-    message: "success",
-    status: 200,
-    data,
-  });
+  // res.send({
+  //   message: "success",
+  //   status: 200,
+  //   data,
+  // });
 };
 export const deleteUserPermission = async (_id: number, res: Response) => {
   const repository = getManager().getRepository(UserPermission);
@@ -60,9 +57,9 @@ export const deleteUserPermission = async (_id: number, res: Response) => {
   // .where("id = :id", { id: Number(req.params.id) })
   // .execute();
 
-  res.send({
-    message: "success",
-    status: httpStatusCodes.OK,
-    data: {},
-  });
+  // res.send({
+  //   message: "success",
+  //   status: httpStatusCodes.OK,
+  //   data: {},
+  // });
 };

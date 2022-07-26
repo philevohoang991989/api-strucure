@@ -32,7 +32,7 @@ export const createUserGroup = async (req: Request, res: Response) => {
   const type_error = name ? "Name" : "";
 
   if (type_error) {
-    return res.send({
+    return res.status(httpStatusCodes.NOT_FOUND).send({
       status: httpStatusCodes.NOT_FOUND,
       message: `Name already exists`,
     });
@@ -40,9 +40,9 @@ export const createUserGroup = async (req: Request, res: Response) => {
 
   const data = await repository.save(body);
 
-  res.send({
+  res.status(httpStatusCodes.OK).send({
     message: "success",
-    status: 200,
+    status: httpStatusCodes.OK,
     data: data,
   });
 };
@@ -56,7 +56,7 @@ export const updateUserGroup = async (req: Request, res: Response) => {
 
   const data = await repository.findOneBy({ id: Number(req.params.id) });
 
-  res.send({
+  res.status(httpStatusCodes.OK).send({
     message: "success",
     status: httpStatusCodes.OK,
     data,
@@ -67,7 +67,7 @@ export const deleteUserGroup = async (req: Request, res: Response) => {
 
   const data = await repository.findOneBy({ id: Number(req.params.id) });
   if (data.permission.length > 0) {
-    return res.send({
+    return res.status(httpStatusCodes.NOT_FOUND).send({
       status: httpStatusCodes.NOT_FOUND,
       message: "Permission not empty",
     });
@@ -81,7 +81,7 @@ export const deleteUserGroup = async (req: Request, res: Response) => {
     .execute();
   // .remove(data);
 
-  res.send({
+  res.status(httpStatusCodes.OK).send({
     message: "success",
     status: httpStatusCodes.OK,
     data: {},
