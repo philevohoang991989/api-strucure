@@ -17,10 +17,14 @@ import { CreateValidation } from "../../validations/user/create.validation";
 
 export const listUser = async (req: Request, res: Response) => {
   const repository = getManager().getRepository(User);
-  const repository_group = getManager().getRepository(UserGroup);
+
+  const page = Number(req.query.page) || 1;
+  const page_size = Number(req.query.limit) || 10;
 
   const list = await repository.find({
     relations: ["group_id"],
+    skip: (page - 1) * page_size,
+    take: page_size,
   });
 
   return res.status(httpStatusCodes.OK).send({
