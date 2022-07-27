@@ -5,40 +5,27 @@ import {
     UpdateDateColumn,
     Column,
     ManyToOne,
-    JoinColumn
+    JoinColumn,
+    OneToMany
   } from "typeorm";
-  import { Customer } from './customerModal'
+  import {Country} from './countryModal'
+  import {District} from './districtModal'
   
   @Entity()
-  export class CustomerAddress {
+  export class Ward {
     @PrimaryGeneratedColumn()
     id: number;
 
-      
-    @ManyToOne(() => Customer, (customer) => customer.customer_group_id)
-    @JoinColumn({ name: "customer_id" })
-    customer : Customer
+    @ManyToOne(() => Country, (country) => country.district)
+    @JoinColumn({ name: "country_id" })
+    country : Country
+
+    @ManyToOne(() => District, (district) => district.ward)
+    @JoinColumn({ name: "district_id" })
+    district: District
   
     @Column()
     name: string;
-
-    @Column()
-    adress: string;
-
-    @Column()
-    country_id: number;
-
-    @Column()
-    district_id: number;
-
-    @Column()
-    ward_id: number;
-
-    @Column()
-    is_primary: number;
-
-    @Column()
-    type: number;
   
     @CreateDateColumn({
       type: "timestamp",

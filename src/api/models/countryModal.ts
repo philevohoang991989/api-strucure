@@ -4,41 +4,20 @@ import {
     CreateDateColumn,
     UpdateDateColumn,
     Column,
-    ManyToOne,
-    JoinColumn
+    OneToMany,
   } from "typeorm";
-  import { Customer } from './customerModal'
+  import {District} from './districtModal'
   
   @Entity()
-  export class CustomerAddress {
+  export class Country {
     @PrimaryGeneratedColumn()
     id: number;
-
-      
-    @ManyToOne(() => Customer, (customer) => customer.customer_group_id)
-    @JoinColumn({ name: "customer_id" })
-    customer : Customer
   
     @Column()
     name: string;
 
-    @Column()
-    adress: string;
-
-    @Column()
-    country_id: number;
-
-    @Column()
-    district_id: number;
-
-    @Column()
-    ward_id: number;
-
-    @Column()
-    is_primary: number;
-
-    @Column()
-    type: number;
+    @OneToMany(() => District, (district) => district.country)
+    district : District
   
     @CreateDateColumn({
       type: "timestamp",
