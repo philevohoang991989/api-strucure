@@ -38,13 +38,13 @@ export const routes = async (router: Router) => {
 
   // Router User Group
   router.get("/api/user-group/list", AuthMiddleware, ListUserGroups);
-  router.post("/api/user-group/create", CreateUserGroup);
+  router.post("/api/user-group/create", AuthMiddleware, CreateUserGroup);
   router.put("/api/user-group/:id", AuthMiddleware, UpdateUserGroup);
   router.delete("/api/user-group/:id", AuthMiddleware, DeleteUserGroup);
 
   // Router Permission
   router.get("/api/permission/list", AuthMiddleware, ListPermission);
-  router.post("/api/permission/create", CreatePermission);
+  router.post("/api/permission/create", AuthMiddleware, CreatePermission);
   router.put("/api/permission/:id", AuthMiddleware, UpdatePermission);
   router.delete("/api/permission/:id", AuthMiddleware, DeletePermission);
 
