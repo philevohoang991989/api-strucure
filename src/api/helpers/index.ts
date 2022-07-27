@@ -1,5 +1,3 @@
-import { Response } from "express";
-
 export const httpStatusCodes = {
   OK: 200,
   BAD_REQUEST: 400,

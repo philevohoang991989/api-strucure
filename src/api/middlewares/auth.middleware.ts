@@ -3,7 +3,6 @@ import { verify } from "jsonwebtoken";
 import { getManager } from "typeorm";
 import { User } from "../models/userModal";
 import { UserPermission } from "../models/userPermission.Modal";
-import { Permissions } from "../models/permissionsModal";
 
 export const AuthMiddleware = async (
   req: Request,
