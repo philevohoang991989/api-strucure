@@ -15,7 +15,7 @@ export const login = async (req: Request, res: Response) => {
     return res.status(httpStatusCodes.BAD_REQUEST).send(error.details);
   }
   const live_token = 24 * 60 * 60 * 1000;
-  const user = await repository.findOneBy({ email: req.body.email });
+  const user = await repository.findOneBy({ username: req.body.username });
   if (!user) {
     return res.send({
       message: "user not found",
@@ -51,11 +51,11 @@ export const login = async (req: Request, res: Response) => {
     },
   });
 };
-export const logout = async (req: Request, res: Response)=>{
-  res.cookie('jwt','',{maxAge: 0});
+export const logout = async (req: Request, res: Response) => {
+  res.cookie("jwt", "", { maxAge: 0 });
   res.send({
-      message: 'success',
-      status: httpStatusCodes.OK,
-      data:{}
-  })
-}
+    message: "success",
+    status: httpStatusCodes.OK,
+    data: {},
+  });
+};

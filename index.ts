@@ -3,13 +3,11 @@ import {routes} from "./src/api/routes"
 import {createConnection} from "typeorm";
 import cookieParser from "cookie-parser";
 
-
 createConnection().then(connection => {
     const app = express();
     const cors = require('cors');
     app.use(express.json());
     app.use(cookieParser());
-
 
     routes(app);
 

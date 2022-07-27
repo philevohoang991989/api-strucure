@@ -1,8 +1,8 @@
-import { Router } from "express";
+import { Router, Request, Response } from "express";
 
 import { Login, Logout } from "../controllers/auth.Controller";
-import {AuthMiddleware } from "../middlewares/auth.middleware";
-import {PermissionMiddleware} from '../middlewares/permission.middleware'
+import { AuthMiddleware } from "../middlewares/auth.middleware";
+import { PermissionMiddleware } from "../middlewares/permission.middleware";
 
 import {
   ListUserGroups,
@@ -39,7 +39,7 @@ export const routes = async (router: Router) => {
   // Router User Group
   router.get("/api/user-group/list", AuthMiddleware, ListUserGroups);
   router.post("/api/user-group/create", CreateUserGroup);
-  router.put("/api/user-group/:id", AuthMiddleware,PermissionMiddleware, UpdateUserGroup);
+  router.put("/api/user-group/:id", AuthMiddleware, UpdateUserGroup);
   router.delete("/api/user-group/:id", AuthMiddleware, DeleteUserGroup);
 
   // Router Permission
@@ -49,11 +49,36 @@ export const routes = async (router: Router) => {
   router.delete("/api/permission/:id", AuthMiddleware, DeletePermission);
 
   // Router User
-  router.get("/api/users/list", AuthMiddleware, ListUser);
-  router.post("/api/users/create", CreateUser);
-  router.get("/api/users/:id", AuthMiddleware,PermissionMiddleware("users"),GetUser);
-  router.put("/api/users/:id", AuthMiddleware, UpdateUser);
-  router.delete("/api/users/:id", AuthMiddleware, DeleteUser);
+  router.get(
+    "/api/users/list",
+    AuthMiddleware,
+    PermissionMiddleware("users"),
+    ListUser
+  );
+  router.post(
+    "/api/users/create",
+    AuthMiddleware,
+    PermissionMiddleware("users"),
+    CreateUser
+  );
+  router.get(
+    "/api/users/:id",
+    AuthMiddleware,
+    PermissionMiddleware("users"),
+    GetUser
+  );
+  router.put(
+    "/api/users/:id",
+    AuthMiddleware,
+    PermissionMiddleware("users"),
+    UpdateUser
+  );
+  router.delete(
+    "/api/users/:id",
+    AuthMiddleware,
+    PermissionMiddleware("users"),
+    DeleteUser
+  );
 
   // Router User Permission
 

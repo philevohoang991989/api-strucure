@@ -18,7 +18,6 @@ export const listUserGroup = async (req: Request, res: Response) => {
 };
 
 export const createUserGroup = async (req: Request, res: Response) => {
-  console.log(req.body);
 
   const body = req.body;
   const repository = getManager().getRepository(UserGroup);
