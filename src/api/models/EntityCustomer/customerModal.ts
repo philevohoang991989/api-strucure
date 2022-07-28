@@ -1,60 +1,66 @@
 import {
-    Entity,
-    PrimaryGeneratedColumn,
-    CreateDateColumn,
-    UpdateDateColumn,
-    Column,
-    ManyToOne,
-    JoinColumn,
-    OneToMany
-  } from "typeorm";
-  import { CustomerGroup } from "./customerGroupModal";
-  import { CustomerAddress } from './customerAddressModal'
-   
-  @Entity()
-  export class Customer {
-    @PrimaryGeneratedColumn()
-    id: number;
-  
-    @Column()
-    cus_code: string;
+  Entity,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+  OneToMany,
+} from "typeorm";
+import { CustomerGroup } from "./customerGroupModal";
+import { CustomerAddress } from "./customerAddressModal";
+import { Order } from "./orderModal";
 
-    @ManyToOne(() => CustomerGroup, (customer_group) => customer_group.customer)
-    @JoinColumn({ name: "customer_group_id" })
-    customer_group_id: CustomerGroup;
+@Entity()
+export class Customer {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @OneToMany(() => CustomerAddress, (customer_address) => customer_address.customer)
-    customer_address: CustomerAddress
+  @Column()
+  cus_code: string;
 
-    @Column()
-    username: string;
+  @ManyToOne(() => CustomerGroup, (customer_group) => customer_group.customer)
+  @JoinColumn({ name: "customer_group_id" })
+  customer_group_id: CustomerGroup;
 
-    @Column()
-    password: string;
+  @OneToMany(() => Order, (order) => order.customer)
+  order: Order;
 
-    @Column()
-    avatar: string;
+  @OneToMany(
+    () => CustomerAddress,
+    (customer_address) => customer_address.customer
+  )
+  customer_address: CustomerAddress;
 
-    @Column()
-    fullname: string;
+  @Column()
+  username: string;
 
-    @Column()
-    email: string;
+  @Column()
+  password: string;
 
-    @Column()
-    status: string;
-  
-    @CreateDateColumn({
-      type: "timestamp",
-      default: () => "CURRENT_TIMESTAMP(6)",
-    })
-    created_at: Date;
-  
-    @UpdateDateColumn({
-      type: "timestamp",
-      default: () => "CURRENT_TIMESTAMP(6)",
-      onUpdate: "CURRENT_TIMESTAMP(6)",
-    })
-    update_at: Date;
-  }
-  
+  @Column()
+  avatar: string;
+
+  @Column()
+  fullname: string;
+
+  @Column()
+  email: string;
+
+  @Column()
+  status: string;
+
+  @CreateDateColumn({
+    type: "timestamp",
+    default: () => "CURRENT_TIMESTAMP(6)",
+  })
+  created_at: Date;
+
+  @UpdateDateColumn({
+    type: "timestamp",
+    default: () => "CURRENT_TIMESTAMP(6)",
+    onUpdate: "CURRENT_TIMESTAMP(6)",
+  })
+  update_at: Date;
+}

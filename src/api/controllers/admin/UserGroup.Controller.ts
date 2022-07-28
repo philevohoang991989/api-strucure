@@ -1,53 +1,55 @@
 import { Request, Response } from "express";
 
 import {
-  listPermission,
-  createPermission,
-  updatePermission,
-  deletePermission,
-} from "../services/permission";
+  listUserGroup,
+  createUserGroup,
+  updateUserGroup,
+  deleteUserGroup,
+} from "../../services/admin/userGroup";
 
-export const ListPermission = async (
+export const ListUserGroups = async (
   req: Request,
   res: Response,
   next: Function
 ) => {
   try {
-    await listPermission(req, res);
+    await listUserGroup(req, res);
   } catch (e) {
     return next(e);
   }
 };
 
-export const CreatePermission = async (
+export const CreateUserGroup = async (
   req: Request,
   res: Response,
   next: Function
 ) => {
   try {
-    await createPermission(req, res);
+    await createUserGroup(req, res);
   } catch (e) {
     return next(e);
   }
 };
-export const UpdatePermission = async (
+
+export const UpdateUserGroup = async (
   req: Request,
   res: Response,
   next: Function
 ) => {
   try {
-    await updatePermission(req, res);
+    await updateUserGroup(req, res);
   } catch (e) {
     return next(e);
   }
 };
-export const DeletePermission = async (
+
+export const DeleteUserGroup = async (
   req: Request,
   res: Response,
   next: Function
 ) => {
   try {
-    await deletePermission(req, res);
+    await deleteUserGroup(req, res);
   } catch (e) {
     return next(e);
   }

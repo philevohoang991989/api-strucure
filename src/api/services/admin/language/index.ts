@@ -1,12 +1,11 @@
 import { Request, Response } from "express";
-import _ from "lodash";
 import { getManager } from "typeorm";
-import { Permissions } from "../../models/EntityAdmin/permissionsModal";
-import { httpStatusCodes } from "../../helpers";
-import { CreateValidation } from "../../validations/Permissions/create.validation";
+import { httpStatusCodes } from "../../../helpers";
+import { Language } from "../../../models/EntityAdmin/languageModal";
+import { LanguageValidation } from "../../../validations/language/create.validation";
 
-export const listPermission = async (req: Request, res: Response) => {
-  const repository = getManager().getRepository(Permissions);
+export const listLanguage = async (req: Request, res: Response) => {
+  const repository = getManager().getRepository(Language);
 
   const list = await repository.find();
 
@@ -16,15 +15,18 @@ export const listPermission = async (req: Request, res: Response) => {
     data: list,
   });
 };
-export const createPermission = async (req: Request, res: Response) => {
+
+export const createLanguage = async (req, res?: Response) => {
   const body = req.body;
-  const repository = getManager().getRepository(Permissions);
-  const { error } = CreateValidation.validate(body);
+  const repository = getManager().getRepository(Language);
+
+  const { error } = LanguageValidation.validate(body);
 
   if (error) {
     return res.status(httpStatusCodes.BAD_REQUEST).send(error.details);
   }
-  const name = await repository.findOneBy({ name: req.body.name });
+
+  const name = await repository.findOneBy({ name: body.name });
 
   const type_error = name ? "Name" : "";
 
@@ -34,17 +36,21 @@ export const createPermission = async (req: Request, res: Response) => {
       message: `Name already exists`,
     });
   }
-
   const data = await repository.save(body);
 
-  res.status(httpStatusCodes.OK).send({
+  return res.status(httpStatusCodes.OK).send({
     message: "success",
     status: httpStatusCodes.OK,
-    data: data,
+    data,
   });
 };
-export const updatePermission = async (req: Request, res: Response) => {
-  const repository = getManager().getRepository(Permissions);
+export const updateLanguage = async (req: Request, res: Response) => {
+  const repository = getManager().getRepository(Language);
+  const { error } = LanguageValidation.validate(req.body);
+
+  if (error) {
+    return res.status(httpStatusCodes.BAD_REQUEST).send(error.details);
+  }
 
   delete req.body["id"];
 
@@ -58,16 +64,15 @@ export const updatePermission = async (req: Request, res: Response) => {
     data,
   });
 };
-
-export const deletePermission = async (req: Request, res: Response) => {
-  const repository = getManager().getRepository(Permissions);
+export const deleteLanguage = async (req: Request, res: Response) => {
+  const repository = getManager().getRepository(Language);
 
   const data = await repository.findOneBy({ id: Number(req.params.id) });
 
   await repository
     .createQueryBuilder()
     .softDelete()
-    .from(Permissions)
+    .from(Language)
     .where("id = :id", { id: Number(req.params.id) })
     .execute();
 

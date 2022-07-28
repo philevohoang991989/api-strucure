@@ -5,15 +5,15 @@ import bcyptjs from "bcryptjs";
 import { getManager } from "typeorm";
 
 // import from file in project
-import { httpStatusCodes, mapPermission } from "../../helpers";
-import { User } from "../../models/EntityAdmin/userModal";
-import { UserGroup } from "../../models/EntityAdmin/userGroupModal";
-import { UserPermission } from "../../models/EntityAdmin/userPermission.Modal";
+import { httpStatusCodes, mapPermission } from "../../../helpers";
+import { User } from "../../../models/EntityAdmin/userModal";
+import { UserGroup } from "../../../models/EntityAdmin/userGroupModal";
+import { UserPermission } from "../../../models/EntityAdmin/userPermission.Modal";
 import {
   createUserPermission,
   deleteUserPermission,
-} from "../../services/userPermission";
-import { CreateValidation } from "../../validations/user/create.validation";
+} from "../userPermission";
+import { CreateValidation } from "../../../validations/user/create.validation";
 
 export const listUser = async (req: Request, res: Response) => {
   const repository = getManager().getRepository(User);

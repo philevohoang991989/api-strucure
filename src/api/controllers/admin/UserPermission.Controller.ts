@@ -3,7 +3,7 @@ import {
   listUserPermission,
   createUserPermission,
   deleteUserPermission,
-} from "../services/userPermission";
+} from "../../services/admin/userPermission";
 
 export const ListUserPermission = async (
   req: Request,

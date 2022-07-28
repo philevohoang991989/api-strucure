@@ -6,7 +6,7 @@ import {
   getUser,
   updateUser,
   deleteUser,
-} from "../services/user";
+} from "../../services/admin/user";
 
 export const ListUser = async (req: Request, res: Response, next: Function) => {
   try {

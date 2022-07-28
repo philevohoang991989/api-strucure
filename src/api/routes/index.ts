@@ -5,7 +5,7 @@ import {
   UpdateInfo,
   Logout,
   UpdatePassword,
-} from "../controllers/auth.Controller";
+} from "../controllers/admin/auth.Controller";
 import { AuthMiddleware } from "../middlewares/auth.middleware";
 import { PermissionMiddleware } from "../middlewares/permission.middleware";
 
@@ -14,19 +14,19 @@ import {
   CreateUserGroup,
   UpdateUserGroup,
   DeleteUserGroup,
-} from "../controllers/UserGroup.Controller";
+} from "../controllers/admin/UserGroup.Controller";
 import {
   ListPermission,
   CreatePermission,
   UpdatePermission,
   DeletePermission,
-} from "../controllers/permission.Controller";
+} from "../controllers/admin/permission.Controller";
 
 import {
   ListUserPermission,
   CreateUserPermission,
   DeleteUserPermission,
-} from "../controllers/UserPermission.Controller";
+} from "../controllers/admin/UserPermission.Controller";
 
 import {
   ListUser,
@@ -34,9 +34,22 @@ import {
   UpdateUser,
   DeleteUser,
   GetUser,
-} from "../controllers/User.Controller";
+} from "../controllers/admin/User.Controller";
+
+import {
+  ListLanguage,
+  CreateLanguage,
+  UpdateLanguage,
+  DeleteLanguage,
+} from "../controllers/admin/language.Controller";
 
 export const routes = async (router: Router) => {
+  // Router language
+  router.get("/api/lang/list", ListLanguage);
+  router.post("/api/lang/create", AuthMiddleware, CreateLanguage);
+  router.post("/api/lang/:id", AuthMiddleware, UpdateLanguage);
+  router.delete("/api/lang/:id", AuthMiddleware, DeleteLanguage);
+
   // Router auth
   router.post("/api/login", Login);
   router.post("/api/logout", AuthMiddleware, Logout);

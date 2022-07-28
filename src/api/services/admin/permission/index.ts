@@ -1,26 +1,24 @@
 import { Request, Response } from "express";
 import _ from "lodash";
 import { getManager } from "typeorm";
-import { httpStatusCodes } from "../../helpers";
-import { UserGroup } from "../../models/EntityAdmin/userGroupModal";
-import { CreateValidation } from "../../validations/UserGroup/create.validation";
+import { Permissions } from "../../../models/EntityAdmin/permissionsModal";
+import { httpStatusCodes } from "../../../helpers";
+import { CreateValidation } from "../../../validations/Permissions/create.validation";
 
-export const listUserGroup = async (req: Request, res: Response) => {
-  const repository = getManager().getRepository(UserGroup);
+export const listPermission = async (req: Request, res: Response) => {
+  const repository = getManager().getRepository(Permissions);
 
   const list = await repository.find();
 
-  return res.send({
+  return res.status(httpStatusCodes.OK).send({
     message: "success",
-    status: 200,
+    status: httpStatusCodes.OK,
     data: list,
   });
 };
-
-export const createUserGroup = async (req: Request, res: Response) => {
-
+export const createPermission = async (req: Request, res: Response) => {
   const body = req.body;
-  const repository = getManager().getRepository(UserGroup);
+  const repository = getManager().getRepository(Permissions);
   const { error } = CreateValidation.validate(body);
 
   if (error) {
@@ -45,9 +43,8 @@ export const createUserGroup = async (req: Request, res: Response) => {
     data: data,
   });
 };
-
-export const updateUserGroup = async (req: Request, res: Response) => {
-  const repository = getManager().getRepository(UserGroup);
+export const updatePermission = async (req: Request, res: Response) => {
+  const repository = getManager().getRepository(Permissions);
 
   delete req.body["id"];
 
@@ -61,24 +58,18 @@ export const updateUserGroup = async (req: Request, res: Response) => {
     data,
   });
 };
-export const deleteUserGroup = async (req: Request, res: Response) => {
-  const repository = getManager().getRepository(UserGroup);
+
+export const deletePermission = async (req: Request, res: Response) => {
+  const repository = getManager().getRepository(Permissions);
 
   const data = await repository.findOneBy({ id: Number(req.params.id) });
-  if (data.permission.length > 0) {
-    return res.status(httpStatusCodes.NOT_FOUND).send({
-      status: httpStatusCodes.NOT_FOUND,
-      message: "Permission not empty",
-    });
-  }
 
   await repository
     .createQueryBuilder()
     .softDelete()
-    .from(UserGroup)
+    .from(Permissions)
     .where("id = :id", { id: Number(req.params.id) })
     .execute();
-  // .remove(data);
 
   res.status(httpStatusCodes.OK).send({
     message: "success",
