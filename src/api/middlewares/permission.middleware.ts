@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { httpStatusCodes } from "../helpers";
 
 export const PermissionMiddleware = (access: string) => {
   return (req: Request, res: Response, next: Function) => {
@@ -14,7 +15,8 @@ export const PermissionMiddleware = (access: string) => {
           (permission) => permission.name === `get_${access}`
         )
       ) {
-        return res.status(401).send({
+        return res.status(httpStatusCodes.UNAUTHORIZED_ERROR).send({
+          status: httpStatusCodes.UNAUTHORIZED_ERROR,
           message: "unauthenticated",
         });
       }
@@ -26,7 +28,8 @@ export const PermissionMiddleware = (access: string) => {
           (permission) => permission.name === `add_${access}`
         )
       ) {
-        return res.status(401).send({
+        return res.status(httpStatusCodes.UNAUTHORIZED_ERROR).send({
+          status: httpStatusCodes.UNAUTHORIZED_ERROR,
           message: "unauthenticated",
         });
       }
@@ -37,7 +40,8 @@ export const PermissionMiddleware = (access: string) => {
           (permission) => permission.name === `edit_${access}`
         )
       ) {
-        return res.status(401).send({
+        return res.status(httpStatusCodes.UNAUTHORIZED_ERROR).send({
+          status: httpStatusCodes.UNAUTHORIZED_ERROR,
           message: "unauthenticated",
         });
       }
@@ -49,7 +53,8 @@ export const PermissionMiddleware = (access: string) => {
           (permission) => permission.name === `delete_${access}`
         )
       ) {
-        return res.status(401).send({
+        return res.status(httpStatusCodes.UNAUTHORIZED_ERROR).send({
+          status: httpStatusCodes.UNAUTHORIZED_ERROR,
           message: "unauthenticated",
         });
       }

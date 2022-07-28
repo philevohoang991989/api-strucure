@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { verify } from "jsonwebtoken";
 import { getManager } from "typeorm";
+import { httpStatusCodes } from "../helpers";
 import { User } from "../models/EntityAdmin/userModal";
 import { UserPermission } from "../models/EntityAdmin/userPermission.Modal";
 
@@ -15,7 +16,8 @@ export const AuthMiddleware = async (
     const payload: any = verify(jwt, process.env.SECRET_KEY);
 
     if (!payload) {
-      return res.status(401).send({
+      return res.status(httpStatusCodes.UNAUTHORIZED_ERROR).send({
+        status: httpStatusCodes.UNAUTHORIZED_ERROR,
         message: "unauthenticated",
       });
     }
@@ -42,7 +44,8 @@ export const AuthMiddleware = async (
 
     next();
   } catch (e) {
-    return res.status(401).send({
+    return res.status(httpStatusCodes.UNAUTHORIZED_ERROR).send({
+      status: httpStatusCodes.UNAUTHORIZED_ERROR,
       message: "unauthenticated",
     });
   }
