@@ -43,11 +43,50 @@ import {
   DeleteLanguage,
 } from "../controllers/admin/language.Controller";
 
+import {
+  ListCountry,
+  CreateCountry,
+  UpdateCountry,
+  DeleteCountry,
+} from "../controllers/admin/country.Controller";
+
+import {
+  ListDistrict,
+  CreateDistrict,
+  UpdateDistrict,
+  DeleteDistrict,
+} from "../controllers/admin/district.Controller";
+
+import {
+  ListWard,
+  CreateWard,
+  UpdateWard,
+  DeleteWard,
+} from "../controllers/admin/ward.Controller";
+
 export const routes = async (router: Router) => {
+  // Router Country
+  router.get("/api/country/list", AuthMiddleware, ListCountry);
+  router.post("/api/country/create", AuthMiddleware, CreateCountry);
+  router.put("/api/country/:id", AuthMiddleware, UpdateCountry);
+  router.delete("/api/country/:id", AuthMiddleware, DeleteCountry);
+
+  // Router District
+  router.get("/api/district/list", AuthMiddleware, ListDistrict);
+  router.post("/api/district/create", AuthMiddleware, CreateDistrict);
+  router.put("/api/district/:id", AuthMiddleware, UpdateDistrict);
+  router.delete("/api/district/:id", AuthMiddleware, DeleteDistrict);
+
+  // Router Ward
+  router.get("/api/ward/list", AuthMiddleware, ListWard);
+  router.post("/api/ward/create", AuthMiddleware, CreateWard);
+  router.put("/api/ward/:id", AuthMiddleware, UpdateWard);
+  router.delete("/api/ward/:id", AuthMiddleware, DeleteWard);
+
   // Router language
   router.get("/api/lang/list", ListLanguage);
   router.post("/api/lang/create", AuthMiddleware, CreateLanguage);
-  router.post("/api/lang/:id", AuthMiddleware, UpdateLanguage);
+  router.put("/api/lang/:id", AuthMiddleware, UpdateLanguage);
   router.delete("/api/lang/:id", AuthMiddleware, DeleteLanguage);
 
   // Router auth

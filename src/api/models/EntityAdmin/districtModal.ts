@@ -9,20 +9,19 @@ import {
   OneToMany,
 } from "typeorm";
 import { Country } from "./countryModal";
-import { District } from "./districtModal";
+import { Ward } from "./wardModal";
 
 @Entity()
-export class Ward {
+export class District {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Country, (country) => country.district)
+  @ManyToOne(() => Country, (country) => country.district_id)
   @JoinColumn({ name: "country_id" })
-  country: Country;
+  country_id: Country;
 
-  @ManyToOne(() => District, (district) => district.ward)
-  @JoinColumn({ name: "district_id" })
-  district: District;
+  @OneToMany(() => Ward, (ward) => ward.district_id)
+  ward_id: Ward;
 
   @Column()
   name: string;

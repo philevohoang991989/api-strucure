@@ -4,30 +4,23 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   Column,
-  ManyToOne,
-  JoinColumn,
   OneToMany,
 } from "typeorm";
-import { Country } from "./countryModal";
-import { Ward } from "./wardModal";
+import { District } from "./districtModal";
 
 @Entity()
-export class District {
+export class Country {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @ManyToOne(() => Country, (country) => country.district)
-  @JoinColumn({ name: "country_id" })
-  country: Country;
-
-  @OneToMany(() => Ward, (ward) => ward.district)
-  ward: Ward;
 
   @Column()
   name: string;
 
   @Column()
   zip_code: number;
+
+  @OneToMany(() => District, (district) => district.country_id)
+  district_id: District;
 
   @CreateDateColumn({
     type: "timestamp",
