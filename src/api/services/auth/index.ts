@@ -119,7 +119,7 @@ export const updatePassword = async (req: Request, res: Response) => {
   });
 
   const { password, ...data } = user;
-
+  res.cookie("jwt", "", { maxAge: 0 });
   res.send({
     message: "success",
     status: httpStatusCodes.OK,
