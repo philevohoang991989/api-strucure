@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import _ from "lodash";
 import { getManager } from "typeorm";
-import { Permissions } from "../../models/permissionsModal";
+import { Permissions } from "../../models/EntityAdmin/permissionsModal";
 import { httpStatusCodes } from "../../helpers";
 import { CreateValidation } from "../../validations/Permissions/create.validation";
 

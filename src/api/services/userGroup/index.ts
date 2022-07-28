@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import _ from "lodash";
 import { getManager } from "typeorm";
 import { httpStatusCodes } from "../../helpers";
-import { UserGroup } from "../../models/userGroupModal";
+import { UserGroup } from "../../models/EntityAdmin/userGroupModal";
 import { CreateValidation } from "../../validations/UserGroup/create.validation";
 
 export const listUserGroup = async (req: Request, res: Response) => {

@@ -6,9 +6,9 @@ import { getManager } from "typeorm";
 
 // import from file in project
 import { httpStatusCodes, mapPermission } from "../../helpers";
-import { User } from "../../models/userModal";
-import { UserGroup } from "../../models/userGroupModal";
-import { UserPermission } from "../../models/userPermission.Modal";
+import { User } from "../../models/EntityAdmin/userModal";
+import { UserGroup } from "../../models/EntityAdmin/userGroupModal";
+import { UserPermission } from "../../models/EntityAdmin/userPermission.Modal";
 import {
   createUserPermission,
   deleteUserPermission,

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { getManager } from "typeorm";
 import { httpStatusCodes } from "../../helpers";
-import { UserPermission } from "../../models/userPermission.Modal";
+import { UserPermission } from "../../models/EntityAdmin/userPermission.Modal";
 import { CreateValidation } from "../../validations/userPermission/create.validation";
 import { createUserPermmiss } from "../../@types/global.type";
 

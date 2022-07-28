@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { verify } from "jsonwebtoken";
 import { getManager } from "typeorm";
-import { User } from "../models/userModal";
-import { UserPermission } from "../models/userPermission.Modal";
+import { User } from "../models/EntityAdmin/userModal";
+import { UserPermission } from "../models/EntityAdmin/userPermission.Modal";
 
 export const AuthMiddleware = async (
   req: Request,

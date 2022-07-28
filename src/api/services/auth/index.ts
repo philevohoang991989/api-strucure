@@ -3,7 +3,7 @@ import bcyptjs from "bcryptjs";
 import { sign } from "jsonwebtoken";
 import { getManager } from "typeorm";
 import { httpStatusCodes } from "../../helpers";
-import { User } from "../../models/userModal";
+import { User } from "../../models/EntityAdmin/userModal";
 import { LoginValidation } from "../../validations/auth/login.validation";
 
 export const login = async (req: Request, res: Response) => {
