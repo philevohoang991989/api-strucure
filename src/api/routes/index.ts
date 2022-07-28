@@ -66,19 +66,19 @@ import {
 
 export const routes = async (router: Router) => {
   // Router Country
-  router.get("/api/country/list", AuthMiddleware, ListCountry);
+  router.get("/api/country/list", ListCountry);
   router.post("/api/country/create", AuthMiddleware, CreateCountry);
   router.put("/api/country/:id", AuthMiddleware, UpdateCountry);
   router.delete("/api/country/:id", AuthMiddleware, DeleteCountry);
 
   // Router District
-  router.get("/api/district/list", AuthMiddleware, ListDistrict);
+  router.get("/api/district/list", ListDistrict);
   router.post("/api/district/create", AuthMiddleware, CreateDistrict);
   router.put("/api/district/:id", AuthMiddleware, UpdateDistrict);
   router.delete("/api/district/:id", AuthMiddleware, DeleteDistrict);
 
   // Router Ward
-  router.get("/api/ward/list", AuthMiddleware, ListWard);
+  router.get("/api/ward/list", ListWard);
   router.post("/api/ward/create", AuthMiddleware, CreateWard);
   router.put("/api/ward/:id", AuthMiddleware, UpdateWard);
   router.delete("/api/ward/:id", AuthMiddleware, DeleteWard);
