@@ -6,7 +6,8 @@ module.exports = {
     password: process.env.TYPEORM_PASSWORD,
     database: process.env.TYPEORM_DATABASE || "admin_woocommerce",
     entities: [
-      "src/api/models/*.ts"
+      "src/api/models/EntityAdmin/*.ts",
+      "src/api/models/EntityCustomer/*.ts"
     ],
     logging: false,
     synchronize: true
