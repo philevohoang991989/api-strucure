@@ -3,7 +3,7 @@ import {
   listLanguage,
   createLanguage,
   updateLanguage,
-  deleteLanguage
+  deleteLanguage,
 } from "../../services/admin/language";
 
 export const ListLanguage = async (
@@ -42,13 +42,13 @@ export const UpdateLanguage = async (
 };
 
 export const DeleteLanguage = async (
-    req: Request,
-    res: Response,
-    next: Function
-  ) => {
-    try {
-      await deleteLanguage(req, res);
-    } catch (e) {
-      return next(e);
-    }
-  };
+  req: Request,
+  res: Response,
+  next: Function
+) => {
+  try {
+    await deleteLanguage(req, res);
+  } catch (e) {
+    return next(e);
+  }
+};

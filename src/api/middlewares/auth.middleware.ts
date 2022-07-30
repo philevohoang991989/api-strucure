@@ -12,14 +12,14 @@ export const AuthMiddleware = async (
 ) => {
   try {
     const jwt = req.cookies["jwt"];
-
     const payload: any = verify(jwt, process.env.SECRET_KEY);
-
     if (!payload) {
-      return res.status(httpStatusCodes.UNAUTHORIZED_ERROR).send({
-        status: httpStatusCodes.UNAUTHORIZED_ERROR,
-        message: "unauthenticated",
-      });
+      return res
+        .status(httpStatusCodes.UNAUTHORIZED_ERROR)
+        .send({
+          status: httpStatusCodes.UNAUTHORIZED_ERROR,
+          message: "unauthenticated",
+        });
     }
     const repository = getManager().getRepository(User);
     const repoUserPermission = getManager().getRepository(UserPermission);
