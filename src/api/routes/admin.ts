@@ -64,7 +64,9 @@ import {
   DeleteWard,
 } from "../controllers/admin/ward.Controller";
 
-export const routes = async (router: Router) => {
+export const admin = async (router: Router) => {
+  
+
   // Router Country
   router.get("/api/country/list", ListCountry);
   router.post("/api/country/create", AuthMiddleware, CreateCountry);
