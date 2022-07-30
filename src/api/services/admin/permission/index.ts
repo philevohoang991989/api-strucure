@@ -3,7 +3,7 @@ import _ from "lodash";
 import { getManager } from "typeorm";
 import { Permissions } from "../../../models/EntityAdmin/permissionsModal";
 import { httpStatusCodes } from "../../../helpers";
-import { CreateValidation } from "../../../validations/Permissions/create.validation";
+import { CreateValidation } from "../../../validations/admin/Permissions/create.validation";
 
 export const listPermission = async (req: Request, res: Response) => {
   const repository = getManager().getRepository(Permissions);

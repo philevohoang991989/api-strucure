@@ -4,8 +4,8 @@ import { sign } from "jsonwebtoken";
 import { getManager } from "typeorm";
 import { httpStatusCodes } from "../../../helpers";
 import { User } from "../../../models/EntityAdmin/userModal";
-import { LoginValidation } from "../../../validations/auth/login.validation";
-import { UpdatePasswordValidation } from "../../../validations/auth/updatePassword.validation";
+import { LoginValidation } from "../../../validations/admin/auth/login.validation";
+import { UpdatePasswordValidation } from "../../../validations/admin/auth/updatePassword.validation";
 
 export const login = async (req: Request, res: Response) => {
   const repository = getManager().getRepository(User);

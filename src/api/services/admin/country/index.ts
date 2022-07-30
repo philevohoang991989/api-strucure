@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { getManager } from "typeorm";
 import { httpStatusCodes } from "../../../helpers";
 import { Country } from "../../../models/EntityAdmin/countryModal";
-import { CreateValidation } from "../../../validations/country/create.validation";
+import { CreateValidation } from "../../../validations/admin/country/create.validation";
 
 export const listCountry = async (req: Request, res: Response) => {
   const repository = getManager().getRepository(Country);

@@ -2,8 +2,8 @@ import { Request, Response } from "express";
 import { getManager } from "typeorm";
 import { httpStatusCodes } from "../../../helpers";
 import { District } from "../../../models/EntityAdmin/districtModal";
-import { CreateDistrictValidation } from "../../../validations/district/create.validation";
-import { EditDistrictValidation } from "../../../validations/district/edit.validation";
+import { CreateDistrictValidation } from "../../../validations/admin/district/create.validation";
+import { EditDistrictValidation } from "../../../validations//admin/district/edit.validation";
 
 export const listDistrict = async (req: Request, res: Response) => {
   const repository = getManager().getRepository(District);

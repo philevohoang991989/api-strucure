@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { getManager } from "typeorm";
 import { httpStatusCodes } from "../../../helpers";
 import { Language } from "../../../models/EntityAdmin/languageModal";
-import { LanguageValidation } from "../../../validations/language/create.validation";
+import { LanguageValidation } from "../../../validations/admin/language/create.validation";
 
 export const listLanguage = async (req: Request, res: Response) => {
   const repository = getManager().getRepository(Language);

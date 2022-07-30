@@ -3,7 +3,7 @@ import _ from "lodash";
 import { getManager } from "typeorm";
 import { httpStatusCodes } from "../../../helpers";
 import { UserGroup } from "../../../models/EntityAdmin/userGroupModal";
-import { CreateValidation } from "../../../validations/UserGroup/create.validation";
+import { CreateValidation } from "../../../validations/admin/UserGroup/create.validation";
 
 export const listUserGroup = async (req: Request, res: Response) => {
   const repository = getManager().getRepository(UserGroup);

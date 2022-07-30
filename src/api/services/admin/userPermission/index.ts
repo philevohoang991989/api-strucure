@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { getManager } from "typeorm";
 import { httpStatusCodes } from "../../../helpers";
 import { UserPermission } from "../../../models/EntityAdmin/userPermission.Modal";
-import { CreateValidation } from "../../../validations/userPermission/create.validation";
+import { CreateValidation } from "../../../validations/admin/userPermission/create.validation";
 import { createUserPermmiss } from "../../../@types/global.type";
 
 export const listUserPermission = async (req: Request, res: Response) => {

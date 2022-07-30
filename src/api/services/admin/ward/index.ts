@@ -2,8 +2,8 @@ import { Request, Response } from "express";
 import { getManager } from "typeorm";
 import { httpStatusCodes } from "../../../helpers";
 import { Ward } from "../../../models/EntityAdmin/wardModal";
-import { CreateWardValidation } from "../../../validations/ward/create.validation";
-import { EditWardValidation } from "../../../validations/ward/edit.validation";
+import { CreateWardValidation } from "../../../validations/admin/ward/create.validation";
+import { EditWardValidation } from "../../../validations/admin/ward/edit.validation";
 
 export const listWard = async (req: Request, res: Response) => {
   const repository = getManager().getRepository(Ward);

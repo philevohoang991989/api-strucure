@@ -13,7 +13,7 @@ import {
   createUserPermission,
   deleteUserPermission,
 } from "../userPermission";
-import { CreateValidation } from "../../../validations/user/create.validation";
+import { CreateValidation } from "../../../validations/admin/user/create.validation";
 
 export const listUser = async (req: Request, res: Response) => {
   const repository = getManager().getRepository(User);
