@@ -105,3 +105,70 @@ export const getCustomer = async (_id: number, res: Response) => {
     data: body,
   });
 };
+export const updateCustomer = async (req: Request, res: Response) => {
+  const repository = getManager().getRepository(Customer);
+
+  const username = await repository.find({
+    where: {
+      username: req.body.username,
+    },
+  });
+  const email = await repository.find({
+    where: {
+      email: req.body.email,
+    },
+  });
+  const fullname = await repository.find({
+    where: {
+      fullname: req.body.fullname,
+    },
+  });
+  const type_error =
+    username.length == 0
+      ? "Username"
+      : email.length == 0
+      ? "Email"
+      : fullname.length == 0
+      ? "Fullname"
+      : "";
+
+  if (type_error) {
+    return res.status(httpStatusCodes.UNAUTHORIZED_ERROR).send({
+      status: httpStatusCodes.UNAUTHORIZED_ERROR,
+      message: `Are you sure you want to change ${type_error}?`,
+    });
+  }
+
+  const user = await repository.findOneBy({ id: Number(req.params.id) });
+
+  delete req.body["id"];
+
+  await repository.update(req.params.id, req.body);
+
+  const data = await repository.findOneBy({ id: Number(req.params.id) });
+  const { password, ...dataPost } = data;
+
+  res.status(httpStatusCodes.OK).send({
+    message: "success",
+    status: httpStatusCodes.OK,
+    data: dataPost,
+  });
+};
+export const deleteCustomer = async (req: Request, res: Response) => {
+  const repository = getManager().getRepository(Customer);
+
+  const data = await repository.findOneBy({ id: Number(req.params.id) });
+
+  await repository
+    .createQueryBuilder()
+    .softDelete()
+    .from(Customer)
+    .where("id = :id", { id: Number(req.params.id) })
+    .execute();
+
+  res.status(httpStatusCodes.OK).send({
+    message: "success",
+    status: httpStatusCodes.OK,
+    data: {},
+  });
+};

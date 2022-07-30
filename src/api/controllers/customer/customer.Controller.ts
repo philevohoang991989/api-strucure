@@ -3,6 +3,8 @@ import {
   listCustomer,
   createCustomer,
   getCustomer,
+  updateCustomer,
+  deleteCustomer,
 } from "../../services/customer/customer";
 
 export const ListCustomer = async (
@@ -34,6 +36,28 @@ export const GetCustomer = async (
 ) => {
   try {
     await getCustomer(Number(req.params.id), res);
+  } catch (e) {
+    return next(e);
+  }
+};
+export const UpdateCustomer = async (
+  req: Request,
+  res: Response,
+  next: Function
+) => {
+  try {
+    await updateCustomer(req, res);
+  } catch (e) {
+    return next(e);
+  }
+};
+export const DeleteCustomer = async (
+  req: Request,
+  res: Response,
+  next: Function
+) => {
+  try {
+    await deleteCustomer(req, res);
   } catch (e) {
     return next(e);
   }

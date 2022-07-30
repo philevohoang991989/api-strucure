@@ -12,6 +12,7 @@ import {
   ListCustomer,
   CreateCustomer,
   GetCustomer,
+  UpdateCustomer,
 } from "../controllers/customer/customer.Controller";
 
 export const customer = async (router: Router) => {
@@ -25,4 +26,5 @@ export const customer = async (router: Router) => {
   router.get("/customer/list", ListCustomer);
   router.post("/customer/create", CreateCustomer);
   router.get("/customer/:id", GetCustomer);
+  router.put("/customer/:id", UpdateCustomer);
 };
