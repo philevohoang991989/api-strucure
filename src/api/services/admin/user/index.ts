@@ -9,10 +9,7 @@ import { httpStatusCodes, mapPermission } from "../../../helpers";
 import { User } from "../../../models/EntityAdmin/userModal";
 import { UserGroup } from "../../../models/EntityAdmin/userGroupModal";
 import { UserPermission } from "../../../models/EntityAdmin/userPermission.Modal";
-import {
-  createUserPermission,
-  deleteUserPermission,
-} from "../userPermission";
+import { createUserPermission, deleteUserPermission } from "../userPermission";
 import { CreateValidation } from "../../../validations/admin/user/create.validation";
 
 export const listUser = async (req: Request, res: Response) => {
@@ -106,12 +103,20 @@ export const createUser = async (req: Request, res: Response) => {
 export const getUser = async (_id: number, res: Response) => {
   const repository = getManager().getRepository(User);
 
-  const { password, ...user } = await repository.findOneBy({ id: _id });
+  const user = await repository.find({
+    relations: {
+      group_id: true,
+    },
+    where: {
+      id: _id,
+    },
+  });
+  const { password, ...body } = user[0];
 
   res.status(httpStatusCodes.OK).send({
     message: "success",
     status: httpStatusCodes.OK,
-    data: user,
+    data: body,
   });
 };
 export const updateUser = async (req: Request, res: Response) => {

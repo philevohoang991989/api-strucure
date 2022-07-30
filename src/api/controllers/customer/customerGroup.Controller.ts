@@ -2,10 +2,15 @@ import { Request, Response } from "express";
 import {
   listCustomerGroup,
   createCustomerGroup,
-  updateCustomerGroup
+  updateCustomerGroup,
+  deleteCustomerGroup,
 } from "../../services/customer/customerGroup";
 
-export const ListCustomerGroup = async (req: Request, res: Response, next: Function) => {
+export const ListCustomerGroup = async (
+  req: Request,
+  res: Response,
+  next: Function
+) => {
   try {
     await listCustomerGroup(req, res);
   } catch (e) {
@@ -13,7 +18,11 @@ export const ListCustomerGroup = async (req: Request, res: Response, next: Funct
   }
 };
 
-export const CreateCustomerGroup = async (req: Request, res: Response, next: Function) => {
+export const CreateCustomerGroup = async (
+  req: Request,
+  res: Response,
+  next: Function
+) => {
   try {
     await createCustomerGroup(req, res);
   } catch (e) {
@@ -21,9 +30,24 @@ export const CreateCustomerGroup = async (req: Request, res: Response, next: Fun
   }
 };
 
-export const UpdateCustomerGroup = async (req: Request, res: Response, next: Function) => {
+export const UpdateCustomerGroup = async (
+  req: Request,
+  res: Response,
+  next: Function
+) => {
   try {
     await updateCustomerGroup(req, res);
+  } catch (e) {
+    return next(e);
+  }
+};
+export const DeleteCustomerGroup = async (
+  req: Request,
+  res: Response,
+  next: Function
+) => {
+  try {
+    await deleteCustomerGroup(req, res);
   } catch (e) {
     return next(e);
   }
