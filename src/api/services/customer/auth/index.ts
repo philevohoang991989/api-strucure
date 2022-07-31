@@ -53,76 +53,91 @@ export const login = async (req: Request, res: Response) => {
   });
 };
 
-// export const updateInfo = async (req: Request, res: Response) => {
-//   const user = req["user"];
+export const updateInfo = async (req: Request, res: Response) => {
+  const customer = req["customer"];
 
-//   const repository = getManager().getRepository(User);
-//   const type_error =
-//     req.body.username == user.username
-//       ? "Username"
-//       : req.body.email == user.email
-//       ? "Email"
-//       : req.body.fullname == user.fullname
-//       ? "Fullname"
-//       : "";
+  const repository = getManager().getRepository(Customer);
+  const username = await repository.find({
+    where: {
+      username: req.body.username,
+    },
+  });
+  const email = await repository.find({
+    where: {
+      email: req.body.email,
+    },
+  });
+  const fullname = await repository.find({
+    where: {
+      fullname: req.body.fullname,
+    },
+  });
+  const type_error =
+    username.length == 0
+      ? "Username"
+      : email.length == 0
+      ? "Email"
+      : fullname.length == 0
+      ? "Fullname"
+      : "";
 
-//   if (type_error) {
-//     return res.status(httpStatusCodes.UNAUTHORIZED_ERROR).send({
-//       status: httpStatusCodes.UNAUTHORIZED_ERROR,
-//       message: `Are you sure you want to change ${type_error}?`,
-//     });
-//   }
+  if (type_error) {
+    return res.status(httpStatusCodes.UNAUTHORIZED_ERROR).send({
+      status: httpStatusCodes.UNAUTHORIZED_ERROR,
+      message: `Are you sure you want to change ${type_error}?`,
+    });
+  }
 
-//   await repository.update(user.id, req.body);
+  await repository.update(customer.id, req.body);
 
-//   const { password, ...data } = await repository.findOneBy(user.id);
-//   res.send({
-//     message: "success",
-//     status: httpStatusCodes.OK,
-//     data,
-//   });
-// };
-// export const logout = async (req: Request, res: Response) => {
-//   res.cookie("jwt", "", { maxAge: 0 });
-//   res.send({
-//     message: "success",
-//     status: httpStatusCodes.OK,
-//     data: {},
-//   });
-// };
-// export const updatePassword = async (req: Request, res: Response) => {
-//   const user = req["user"];
+  const { password, ...data } = await repository.findOneBy(customer.id);
+  res.send({
+    message: "success",
+    status: httpStatusCodes.OK,
+    data,
+  });
+};
+export const logout = async (req: Request, res: Response) => {
+  res.cookie("jwt", "", { maxAge: 0 });
+  res.send({
+    message: "success",
+    status: httpStatusCodes.OK,
+    data: {},
+  });
+};
+export const updatePassword = async (req: Request, res: Response) => {
+  const customer = req["customer"];
 
-//   const { error } = UpdatePasswordValidation.validate(req.body);
+  const { error } = UpdatePasswordValidation.validate(req.body);
 
-//   if (error) {
-//     return res.status(httpStatusCodes.BAD_REQUEST).send(error.details);
-//   }
+  if (error) {
+    return res.status(httpStatusCodes.BAD_REQUEST).send(error.details);
+  }
 
-//   if (!(await bcyptjs.compare(req.body.old_password, user.password))) {
-//     return res.status(httpStatusCodes.BAD_REQUEST).send({
-//       message: "invalid password",
-//       status: httpStatusCodes.BAD_REQUEST,
-//     });
-//   }
+  if (!(await bcyptjs.compare(req.body.old_password, customer.password))) {
+    return res.status(httpStatusCodes.BAD_REQUEST).send({
+      message: "invalid password",
+      status: httpStatusCodes.BAD_REQUEST,
+    });
+  }
 
-//   if (req.body.password !== req.body.password_confirm) {
-//     return res.status(httpStatusCodes.BAD_REQUEST).send({
-//       message: "Password's do not match",
-//     });
-//   }
+  if (req.body.password !== req.body.password_confirm) {
+    return res.status(httpStatusCodes.BAD_REQUEST).send({
+      message: "Password's do not match",
+    });
+  }
 
-//   const repository = getManager().getRepository(User);
+  const repository = getManager().getRepository(Customer);
 
-//   await repository.update(user.id, {
-//     password: await bcyptjs.hash(req.body.password, 10),
-//   });
+  await repository.update(customer.id, {
+    password: await bcyptjs.hash(req.body.password, 10),
+  });
 
-//   const { password, ...data } = user;
-//   res.cookie("jwt", "", { maxAge: 0 });
-//   res.send({
-//     message: "success",
-//     status: httpStatusCodes.OK,
-//     data,
-//   });
-// };
+  const { password, ...data } = customer;
+  res.cookie("jwt", "", { maxAge: 0 });
+  res.send({
+    message: "success",
+    status: httpStatusCodes.OK,
+    data,
+  });
+};

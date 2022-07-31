@@ -4,7 +4,12 @@ import { AuthMiddleware } from "../middlewares/auth.middleware";
 
 import { AuthCustomerMiddleware } from "../middlewares/authCustomer.middleware";
 
-import { Login } from "../controllers/customer/authCustomer.Controller";
+import {
+  Login,
+  UpdateInfo,
+  Logout,
+  UpdatePassword,
+} from "../controllers/customer/authCustomer.Controller";
 
 import {
   ListCustomerGroup,
@@ -26,12 +31,15 @@ export const customer = async (router: Router) => {
   router.put("/customer-group/:id", AuthMiddleware, UpdateCustomerGroup);
   router.delete("/customer-group/:id", AuthMiddleware, DeleteCustomerGroup);
 
+  // Auth customer
+  router.post("/customer/login", Login);
+  router.put("/customer/update-info", AuthCustomerMiddleware, UpdateInfo);
+  router.post("/customer/logout", AuthCustomerMiddleware, Logout);
+  router.put("/customer/update-pass", AuthCustomerMiddleware, UpdatePassword);
+
   // Router Customer
   router.get("/customer/list", ListCustomer);
   router.post("/customer/create", CreateCustomer);
   router.get("/customer/:id", GetCustomer);
   router.put("/customer/:id", UpdateCustomer);
-
-  // Auth customer
-  router.post("/customer/login", Login);
 };
