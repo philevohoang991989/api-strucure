@@ -2,6 +2,10 @@ import { Router } from "express";
 
 import { AuthMiddleware } from "../middlewares/auth.middleware";
 
+import { AuthCustomerMiddleware } from "../middlewares/authCustomer.middleware";
+
+import { Login } from "../controllers/customer/authCustomer.Controller";
+
 import {
   ListCustomerGroup,
   CreateCustomerGroup,
@@ -27,4 +31,7 @@ export const customer = async (router: Router) => {
   router.post("/customer/create", CreateCustomer);
   router.get("/customer/:id", GetCustomer);
   router.put("/customer/:id", UpdateCustomer);
+
+  // Auth customer
+  router.post("/customer/login", Login);
 };
