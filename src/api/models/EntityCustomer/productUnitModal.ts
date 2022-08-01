@@ -1,21 +1,30 @@
 import {
   Entity,
   PrimaryGeneratedColumn,
+  Column,
   CreateDateColumn,
   UpdateDateColumn,
-  Column,
+  OneToMany,
+  JoinColumn,
 } from "typeorm";
+import { Product } from "./productModal";
 
 @Entity()
-export class Tags {
+export class ProductUnit {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  title: string;
+  product_id: number;
+
+  @OneToMany(() => Product, (product) => product.productUnit)
+  product: Product;
 
   @Column()
-  slug: string;
+  value: string;
+
+  @Column()
+  date_start: Date;
 
   @CreateDateColumn({
     type: "timestamp",

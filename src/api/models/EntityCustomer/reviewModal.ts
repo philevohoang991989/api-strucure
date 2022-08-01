@@ -4,38 +4,31 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   Column,
+  ManyToOne,
   JoinColumn,
-  OneToMany,
 } from "typeorm";
-
-import { ProductToCategory } from "./productToCategoryModal";
+import { Product } from "./productModal";
 
 @Entity()
-export class Category {
+export class Review {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToMany(() => Category, (category) => category.id)
-  @JoinColumn({ name: "parent_id" })
-  category: Category;
+  @Column()
+  customer_id: number;
 
-  @OneToMany(
-    () => ProductToCategory,
-    (product_to_category) => product_to_category.category
-  )
-  product_to_category: ProductToCategory;
+  @ManyToOne(() => Product, (product) => product.review)
+  @JoinColumn({ name: "product_id" })
+  product: Product;
 
   @Column()
-  name: string;
+  author: string;
 
   @Column()
-  top: string;
+  content: string;
 
   @Column()
-  status: number;
-
-  @Column()
-  sort_order: number;
+  rating: number;
 
   @CreateDateColumn({
     type: "timestamp",
@@ -49,7 +42,4 @@ export class Category {
     onUpdate: "CURRENT_TIMESTAMP(6)",
   })
   update_at: Date;
-
-  @Column()
-  type: number;
 }

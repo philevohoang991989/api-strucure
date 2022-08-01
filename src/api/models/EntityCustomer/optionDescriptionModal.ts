@@ -1,21 +1,31 @@
 import {
   Entity,
   PrimaryGeneratedColumn,
+  Column,
   CreateDateColumn,
   UpdateDateColumn,
-  Column,
+  JoinColumn,
+  ManyToOne,
 } from "typeorm";
+import { Option } from "./optionModal";
 
 @Entity()
-export class Tags {
+export class OptionDescription {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  title: string;
+  @ManyToOne(() => Option, (option) => option.option_description)
+  @JoinColumn({ name: "option_id" })
+  option: Option;
 
   @Column()
-  slug: string;
+  type: string;
+
+  @Column()
+  language_id: number;
+
+  @Column()
+  name: string;
 
   @CreateDateColumn({
     type: "timestamp",

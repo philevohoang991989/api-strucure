@@ -7,8 +7,10 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  OneToMany,
 } from "typeorm";
 import { Customer } from "./customerModal";
+import { OrderItem } from "./orderItemModal";
 
 @Entity()
 export class Order {
@@ -21,6 +23,9 @@ export class Order {
   @ManyToOne(() => Customer, (customer) => customer.order)
   @JoinColumn({ name: "customer_id" })
   customer: Customer;
+
+  @OneToMany(() => OrderItem, (order_item) => order_item.order)
+  order_item: OrderItem;
 
   @Column()
   note: string;

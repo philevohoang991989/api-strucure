@@ -4,38 +4,44 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   Column,
+  ManyToOne,
   JoinColumn,
   OneToMany,
 } from "typeorm";
-
-import { ProductToCategory } from "./productToCategoryModal";
+import { Product } from "./productModal";
+import { Language } from "../EntityAdmin/languageModal";
 
 @Entity()
-export class Category {
+export class ProductDescription {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToMany(() => Category, (category) => category.id)
-  @JoinColumn({ name: "parent_id" })
-  category: Category;
+  @ManyToOne(() => Product, (product) => product.product_description)
+  @JoinColumn({ name: "product_id" })
+  product: Product;
 
-  @OneToMany(
-    () => ProductToCategory,
-    (product_to_category) => product_to_category.category
-  )
-  product_to_category: ProductToCategory;
+  @Column()
+  lang_id: number;
+
+  @Column()
+  image: string;
 
   @Column()
   name: string;
 
   @Column()
-  top: string;
+  description: string;
 
   @Column()
-  status: number;
+  slug: string;
 
   @Column()
-  sort_order: number;
+  tags: string;
+
+  @Column({
+    type: "simple-array",
+  })
+  meta: string[];
 
   @CreateDateColumn({
     type: "timestamp",
@@ -49,7 +55,4 @@ export class Category {
     onUpdate: "CURRENT_TIMESTAMP(6)",
   })
   update_at: Date;
-
-  @Column()
-  type: number;
 }
